@@ -35,11 +35,18 @@ var H = canvas.height = window.innerHeight-50;
 function sendJSONXMLHTTPRequest(url, objects, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
+        
+        // full server response was received
         if (xhr.readyState==4) {
             try {
+                
+                // checking the http response status code
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
+                    const response = JSON.parse(xhr.responseText);
+
                     //XXX: Pass the data to the callback!
+                    callback(response)
                 }
             } 
             catch(e) {
@@ -50,6 +57,16 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
     // Remember to use application/json !
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader(
+    "Content-Type",
+    "application/json"
+    );
+    xhr.setRequestHeader(
+    "Accept",
+    "application/json"
+    );
+    httpRequest.send(objects);
 }
 
 
