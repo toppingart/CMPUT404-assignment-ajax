@@ -74,22 +74,19 @@ def flask_post_json():
 @app.route("/")
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
-    return app.redirect('/static/index.html')
+    return app.redirect('/static/index.html', code=302)
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
     '''update the entities via this interface'''
     if request.method == 'POST':
+        print("HERE")
         json_data = flask_post_json()
-        x_value = json_data.get('x')
-        y_value=  json_data.get('y')
-        colour_value = json_data.get('colour')
-        myWorld.update(entity, 'x', x_value)
-        myWorld.update(entity, 'y', y_value)
-       #  myWorld.update(entity, 'colour', colour_value)
-        return json_data
+        print(json_data)
+        myWorld.set(entity, json_data)
+        get_entity = myWorld.get(entity)
+        return json.dumps(get_entity)
 
-    
     if request.method == 'PUT':
         json_data = flask_post_json()
         x_value = json_data.get('x')
@@ -97,11 +94,11 @@ def update(entity):
         colour_value = json_data.get('colour')
         myWorld.update(entity, 'x', x_value)
         myWorld.update(entity, 'y', y_value)
-      #  myWorld.update(entity, 'colour', colour_value)
-        return json_data
+        if colour_value is not None:
+            myWorld.update(entity, 'colour', colour_value)
 
-    else:
-        return None
+        get_entity = myWorld.get(entity)
+        return json.dumps(get_entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():

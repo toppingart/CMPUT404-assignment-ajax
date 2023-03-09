@@ -154,8 +154,23 @@ function getPosition(e) {
 function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
-    //XXX: Send a XHTML Request that updates the entity you just  modified!
 
+    //XXX: Send a XHTML Request that updates the entity you just  modified!
+    //sendJSONXMLHTTPRequest('127.0.0.1:5000/entity/' + entity, data, resolve)
+    var promise = fetch('http://127.0.0.1:5000' + '/entity/' + entity, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(response => {
+        if (response.status == 200){
+            world = response.text()
+        }
+    }).catch(function(error) {                        // catch
+    console.log('Request failed', error);
+  });
 }
 
 var counter = 0;
@@ -279,6 +294,12 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    var promise = fetch('http://127.0.0.1:5000/world')
+    promise.then(response => {
+        if (response.status == 200){
+            world = response.text()
+        }
+    }).catch(error => console.log("error: " + error))
     drawFrame();
 }
 
