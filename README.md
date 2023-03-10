@@ -12,4 +12,27 @@ Contributors / Licensing
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 
+* Modications have been made to static/index.html and server.py
 
+External Sources
+========================
+* https://www.w3schools.com/css/css3_buttons.asp (for creating hoverable buttons)
+  * Copyright 1999-2023 by Refsnes Data. All Rights Reserved.
+ 
+* https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#body
+  * For understanding how to use the Fetch API
+  * Portions of their content are ©1998–2023 by individual mozilla.org contributors. Content available under a Creative Commons license.
+
+* vp_arth's idea on using fetch to post JSON data (answer edited by yousoumar)
+  * Title of question: Fetch: POST JSON data
+  * Year: 2015
+  * Link to site where implementation was found: https://stackoverflow.com/questions/29775797/fetch-post-json-data
+  * Link to author (in this case, the person who asked the question): https://stackoverflow.com/users/304174/razor
+  * Link to author (in this case, the person who answered the question): https://stackoverflow.com/users/2110496/vp-arth
+  * Link to author (in this case, the person who edited the answer): https://stackoverflow.com/users/15288641/yousoumar
+  * Link to license: https://creativecommons.org/licenses/by-sa/4.0/
+  
+* https://www.educative.io/answers/how-to-return-the-status-code-in-flask
+  * For understanding how to return status codes in Flask
+  * Link to contributor: https://www.educative.io/profile/view/5104289219608576
+  * Copyright ©2023 Educative, Inc. All rights reserved
