@@ -84,8 +84,8 @@ function drawCircle(context,entity) {
         //moveTo(x,y);
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
-        stroke();                                
+        arc(x, y, (entity["radius"])?entity["radius"]:10, 0, 2.0 * Math.PI, false);  
+        fill()//stroke();                                
     }
 }
 
@@ -94,7 +94,7 @@ function prepEntity(entity) {
         entity["colour"] = "#FF0000";
     }
     if (!entity["radius"]) {
-        entity["radius"] = 50;
+        entity["radius"] = 10;
     }
     return entity;
 }
@@ -155,7 +155,6 @@ function getPosition(e) {
 
 function addEntity(entity, data) {
     world[entity] = data;
-    drawNextFrame(); // (but should we?)
 
     //XXX: Send a XHTML Request that updates the entity you just  modified!
     //sendJSONXMLHTTPRequest('127.0.0.1:5000/entity/' + entity, data, resolve)
@@ -173,7 +172,8 @@ function addEntity(entity, data) {
     }).then(
         data => {
             world = JSON.parse(data)
-        console.log(typeof(world))}
+            drawNextFrame()
+            }
     ).catch(function(error) {                        // catch
     console.log('Request failed', error);
   });
@@ -289,7 +289,7 @@ mouse.mousedowners.push(function(x,y,clicked,e) {
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
@@ -300,6 +300,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+
     var promise = fetch('http://' + host + '/world')
     promise.then(response => {
         if (response.status == 200){
@@ -308,13 +309,18 @@ function update() {
         }
     }).then(
         data => {
-            world = JSON.parse(data)}
+            world = JSON.parse(data)
+            console.log(world)
+            drawNextFrame()
+            drawFrame()
+            }
+
     ).catch(error => console.log("error: " + error))
-    drawFrame();
+    
 }
 
-// 30 frames per second
-setInterval( update, 1000/30.0);
+// 30 frames per 100 milliseconds (0.1 seconds)
+setInterval( update, 100/30.0);
 
 
 
