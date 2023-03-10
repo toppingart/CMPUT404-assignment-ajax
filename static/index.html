@@ -72,6 +72,8 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
 
 world = {};
 
+
+
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
@@ -157,7 +159,7 @@ function addEntity(entity, data) {
 
     //XXX: Send a XHTML Request that updates the entity you just  modified!
     //sendJSONXMLHTTPRequest('127.0.0.1:5000/entity/' + entity, data, resolve)
-    var promise = fetch('http://127.0.0.1:5000' + '/entity/' + entity, {
+    var promise = fetch('http://' + host + '/entity/' + entity, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -166,9 +168,13 @@ function addEntity(entity, data) {
         body: JSON.stringify(data)
     }).then(response => {
         if (response.status == 200){
-            world = response.text()
+            return response.text()
         }
-    }).catch(function(error) {                        // catch
+    }).then(
+        data => {
+            world = JSON.parse(data)
+        console.log(typeof(world))}
+    ).catch(function(error) {                        // catch
     console.log('Request failed', error);
   });
 }
@@ -294,12 +300,16 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-    var promise = fetch('http://127.0.0.1:5000/world')
+    var promise = fetch('http://' + host + '/world')
     promise.then(response => {
         if (response.status == 200){
-            world = response.text()
+            return response.text()
+
         }
-    }).catch(error => console.log("error: " + error))
+    }).then(
+        data => {
+            world = JSON.parse(data)}
+    ).catch(error => console.log("error: " + error))
     drawFrame();
 }
 
