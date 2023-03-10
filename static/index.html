@@ -159,7 +159,7 @@ function addEntity(entity, data) {
     }).then(
         data => {
             world = JSON.parse(data)
-            drawNextFrame()
+            drawNextFrame() // we have something new to draw
             }
     ).catch(function(error) {                     
     console.log('Request failed', error);
@@ -280,8 +280,7 @@ mouse.mouseuppers.push(function(x,y,clicked,e) {
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':currentColour,
-                          'radius':10});
+    addEntityWithoutName({'x':x,'y':y,'colour':currentColour});
 });
 
 
