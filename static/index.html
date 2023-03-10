@@ -40,6 +40,7 @@ var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
 // user starts off with blue, listen to which button has been recently clicked on
+// Reference: https://www.w3schools.com/howto/howto_js_active_element.asp
 var currentColour = "blue";
 
 var allButtons = document.getElementById("all-colour-buttons");
@@ -296,7 +297,6 @@ function update() {
     }).then(
         data => {
             world = JSON.parse(data)
-            console.log(world)
             drawNextFrame() // we have something new to draw
             drawFrame()
             }
