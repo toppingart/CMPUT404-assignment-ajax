@@ -40,5 +40,8 @@ External Sources / References
   * Link to contributor: https://www.educative.io/profile/view/5104289219608576
   * Copyright ©2023 Educative, Inc. All rights reserved
   
-* https://github.com/uofa-cmput404/cmput404-slides/tree/master/examples/ObserverExampleAJAX (by Abram Hindle)
+* https://github.com/uofa-cmput404/cmput404-slides/tree/master/examples/ObserverExampleAJAX 
   * To see an example of fetch being used
+  * server.py: Copyright 2013-2023 Abram Hindle, Hazel Victoria Campbell
+  * insipid.html: contains contributions from Abram Hindle
+  * tweets.html: contains contributions from Abram Hindle
