@@ -80,9 +80,7 @@ def hello():
 def update(entity):
     '''update the entities via this interface'''
     if request.method == 'POST':
-        print("HERE")
         json_data = flask_post_json()
-        print(json_data)
         myWorld.set(entity, json_data)
         get_entity = myWorld.get(entity)
         return json.dumps(get_entity)
@@ -94,7 +92,7 @@ def update(entity):
         colour_value = json_data.get('colour')
         myWorld.update(entity, 'x', x_value)
         myWorld.update(entity, 'y', y_value)
-        if colour_value is not None:
+        if colour_value is not None: # if a colour exists
             myWorld.update(entity, 'colour', colour_value)
 
         get_entity = myWorld.get(entity)
