@@ -81,19 +81,27 @@ def update(entity):
     '''update the entities via this interface'''
     if request.method == 'POST':
         json_data = flask_post_json()
-        myWorld.set(entity, json_data)
-        get_entity = myWorld.get(entity)
+        myWorld.set(entity, json_data) # set the data for that entity
+        get_entity = myWorld.get(entity) # get that entity to be returned later
         return json.dumps(get_entity)
 
     if request.method == 'PUT':
         json_data = flask_post_json()
+
         x_value = json_data.get('x')
         y_value=  json_data.get('y')
         colour_value = json_data.get('colour')
-        myWorld.update(entity, 'x', x_value)
-        myWorld.update(entity, 'y', y_value)
-        if colour_value is not None: # if a colour exists
+        radius_value = json_data.get('radius')
+
+        # check if x,y,colour, and radius exists
+        if x_value is not None:
+            myWorld.update(entity, 'x', x_value)
+        if y_value is not None:
+            myWorld.update(entity, 'y', y_value)
+        if colour_value is not None: 
             myWorld.update(entity, 'colour', colour_value)
+        if radius_value is not None:
+            myWorld.update(entity, 'radius', radius_value)
 
         get_entity = myWorld.get(entity)
         return json.dumps(get_entity)
@@ -114,7 +122,7 @@ def clear():
     '''Clear the world out!'''
     if request.method == 'GET' or request.method == 'POST':
         myWorld.clear()
-        return "Success", 200
+        return "Successfully cleared the world out!", 200
 
 if __name__ == "__main__":
     app.run()

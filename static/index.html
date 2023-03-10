@@ -40,27 +40,27 @@ var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
 // user starts off with blue, listen to which button has been recently clicked on
-// Reference: https://www.w3schools.com/howto/howto_js_active_element.asp
+// Reference: https://www.w3schools.com/css/css3_buttons.asp , https://www.w3schools.com/howto/howto_js_active_element.asp
 var currentColour = "blue";
 
 var allButtons = document.getElementById("all-colour-buttons");
 
-var buttons = allButtons.getElementsByClassName("c-btn");
+var buttons = allButtons.getElementsByClassName("c-btn"); // colour button
 
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", function() {
     var current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
-    this.className += " active";
+    this.className += " active"; // make the clicked button active
   });
 }
-
-world = {};
 
 // when button is click, change colour of the "brush"
 function changeCurrentColour(colourButton){
     currentColour = colourButton.value
 }
+
+world = {};
 
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
@@ -73,7 +73,7 @@ function drawCircle(context,entity) {
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
         arc(x, y, (entity["radius"])?entity["radius"]:10, 0, 2.0 * Math.PI, false);  
-        fill()                            
+        fill() // fill instead of stroke                            
     }
 }
 
@@ -162,7 +162,7 @@ function addEntity(entity, data) {
             drawNextFrame() // we have something new to draw
             }
     ).catch(function(error) {                     
-    console.log('Request failed', error);
+    console.log('Failed to add the entity: ', error);
   });
 }
 
@@ -291,7 +291,6 @@ function update() {
     promise.then(response => {
         if (response.status == 200){
             return response.text()
-
         }
     }).then(
         data => {
@@ -300,7 +299,7 @@ function update() {
             drawFrame()
             }
 
-    ).catch(error => console.log("error: " + error))
+    ).catch(error => console.log("Failed to update: " + error))
     
 }
 
