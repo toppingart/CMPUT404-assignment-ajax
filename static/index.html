@@ -6,7 +6,7 @@
     <meta content='width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <meta name="license" content="
-        Copyright 2013 Abram Hindle
+        Copyright 2023 Abram Hindle, Elena Xu
         
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -23,6 +23,11 @@
     <script src="json2.js"></script>
   </head> 
   <body bgcolor="black" height="100%" width="100%"> 
+
+    <button type="button" id="red-button" value="red" onclick="changeCurrentColour(this)">Red</button>
+    <button type="button" id="green-button" value="green" onclick="changeCurrentColour(this)">Green</button>
+    <button type="button" id="blue-button" value="blue" onclick="changeCurrentColour(this)">Blue</button>
+
     <canvas id="c" width="100%" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas> 
     <script>
 var canvas = document.getElementById('c');
@@ -31,49 +36,13 @@ var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
-
-function sendJSONXMLHTTPRequest(url, objects, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        
-        // full server response was received
-        if (xhr.readyState==4) {
-            try {
-                
-                // checking the http response status code
-                if (xhr.status==200) {
-                    //XXX: parse some JSON from the request!
-                    const response = JSON.parse(xhr.responseText);
-
-                    //XXX: Pass the data to the callback!
-                    callback(response)
-                }
-            } 
-            catch(e) {
-                alert('Error: ' + e.name);
-            }
-        }
-    };
-    //XXX: POST to a URL
-    //XXX: set the mimetype and the accept headers!
-    // Remember to use application/json !
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader(
-    "Content-Type",
-    "application/json"
-    );
-    xhr.setRequestHeader(
-    "Accept",
-    "application/json"
-    );
-    httpRequest.send(objects);
-}
-
+var currentColour = "blue";
 
 world = {};
 
-
-
+function changeCurrentColour(colourButton){
+    currentColour = colourButton.value
+}
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
@@ -85,7 +54,7 @@ function drawCircle(context,entity) {
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
         arc(x, y, (entity["radius"])?entity["radius"]:10, 0, 2.0 * Math.PI, false);  
-        fill()//stroke();                                
+        fill()                            
     }
 }
 
@@ -157,7 +126,6 @@ function addEntity(entity, data) {
     world[entity] = data;
 
     //XXX: Send a XHTML Request that updates the entity you just  modified!
-    //sendJSONXMLHTTPRequest('127.0.0.1:5000/entity/' + entity, data, resolve)
     var promise = fetch('http://' + host + '/entity/' + entity, {
         method: 'POST',
         headers: {
@@ -285,15 +253,15 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'colour':currentColour});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'colour':currentColour});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
+    addEntityWithoutName({'x':x,'y':y,'colour':currentColour,
                           'radius':10});
 });
 
@@ -319,11 +287,34 @@ function update() {
     
 }
 
-// 30 frames per 100 milliseconds (0.1 seconds)
-setInterval( update, 100/30.0);
+// 30 frames per second
+setInterval( update, 1000/30.0);
 
 
 
     </script>
 </body>
 </html>
+
+<style>
+
+.button {
+  transition-duration: 0.4s;
+}
+
+#red-button:hover {
+  background-color: red;
+  color: white;
+}  
+
+#green-button:hover {
+  background-color: green;
+  color: white;
+}   
+
+#blue-button:hover {
+  background-color: blue;
+  color: white;
+}   
+
+</style>
